@@ -1,0 +1,143 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+  width="512"
+  height="512"
+>
+  <defs>
+    <!-- Luxury gold gradient -->
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff4d2"/>
+      <stop offset="22%" stop-color="#d9a441"/>
+      <stop offset="48%" stop-color="#fff0b8"/>
+      <stop offset="72%" stop-color="#b87920"/>
+      <stop offset="100%" stop-color="#f5d27a"/>
+    </linearGradient>
+
+    <!-- Dark background -->
+    <radialGradient id="black" cx="50%" cy="45%" r="70%">
+      <stop offset="0%" stop-color="#181818"/>
+      <stop offset="65%" stop-color="#080808"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+
+    <!-- Soft gold glow -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Subtle shadow -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow
+        dx="0"
+        dy="5"
+        stdDeviation="6"
+        flood-color="#000000"
+        flood-opacity="0.7"
+      />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect
+    width="512"
+    height="512"
+    rx="105"
+    fill="url(#black)"
+  />
+
+  <!-- Outer luxury ring -->
+  <circle
+    cx="256"
+    cy="256"
+    r="205"
+    fill="none"
+    stroke="url(#gold)"
+    stroke-width="7"
+    filter="url(#glow)"
+  />
+
+  <!-- Inner subtle ring -->
+  <circle
+    cx="256"
+    cy="256"
+    r="194"
+    fill="none"
+    stroke="#8f6428"
+    stroke-opacity="0.35"
+    stroke-width="1.5"
+  />
+
+  <!-- FE Monogram -->
+  <g
+    fill="url(#gold)"
+    filter="url(#shadow)"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-weight="bold"
+  >
+    <!-- F -->
+    <text
+      x="157"
+      y="345"
+      font-size="220"
+    >F</text>
+
+    <!-- E -->
+    <text
+      x="255"
+      y="350"
+      font-size="205"
+    >E</text>
+  </g>
+
+  <!-- Elegant fashion swoosh -->
+  <path
+    d="M125 326
+       C175 345 205 322 236 288
+       C271 249 299 206 344 218
+       C366 224 382 239 395 252"
+    fill="none"
+    stroke="url(#gold)"
+    stroke-width="13"
+    stroke-linecap="round"
+    filter="url(#glow)"
+  />
+
+  <!-- Fine highlight on swoosh -->
+  <path
+    d="M128 326
+       C176 340 207 317 238 284
+       C270 248 298 211 340 219"
+    fill="none"
+    stroke="#fff3ce"
+    stroke-opacity="0.65"
+    stroke-width="2"
+    stroke-linecap="round"
+  />
+
+  <!-- Luxury sparkle -->
+  <path
+    d="M122 185
+       L128 201
+       L144 207
+       L128 213
+       L122 229
+       L116 213
+       L100 207
+       L116 201 Z"
+    fill="url(#gold)"
+    filter="url(#glow)"
+  />
+
+  <!-- Small bottom accent -->
+  <circle
+    cx="256"
+    cy="407"
+    r="3"
+    fill="#e7bb62"
+  />
+</svg>

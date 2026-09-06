@@ -16,10 +16,12 @@ export default async function MenPage() {
   // Get real products from Supabase
   const allProducts = await getProducts();
 
+  // Show only men's products
   const menProducts = allProducts.filter(
     (product) => product.gender === "men"
   );
 
+  // Show only trending men's products
   const trendingMen = menProducts.filter(
     (product) => product.trending
   );
