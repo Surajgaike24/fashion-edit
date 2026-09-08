@@ -7,9 +7,9 @@ import { getProducts } from "@/lib/products";
 export default async function TrendingProducts() {
   const products = await getProducts();
 
-  const trendingProducts = products.filter(
-    (product) => product.trending
-  );
+  // Supabase is the single source of truth.
+  // Every product in the database is shown on the Home page.
+  const homeProducts = products;
 
   return (
     <section
@@ -51,21 +51,21 @@ export default async function TrendingProducts() {
           </Link>
         </div>
 
-        {/* Curated signal */}
+        {/* Product Count */}
         <div className="mb-8 flex items-center justify-between border-y border-black/10 py-4">
           <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-neutral-400">
             Selected pieces
           </p>
 
           <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-neutral-500">
-            {trendingProducts.length} currently featured
+            {homeProducts.length} products
           </p>
         </div>
 
         {/* Products */}
-        {trendingProducts.length > 0 ? (
+        {homeProducts.length > 0 ? (
           <div className="grid grid-cols-2 gap-x-4 gap-y-12 lg:grid-cols-4 lg:gap-x-6">
-            {trendingProducts.map((product) => (
+            {homeProducts.map((product) => (
               <div key={product.id} className="group">
                 <ProductCard
                   id={product.id}
@@ -74,19 +74,11 @@ export default async function TrendingProducts() {
                   price={`₹${product.price.toLocaleString("en-IN")}`}
                   category={product.category}
                   image={product.image}
+                  sellingPoint={product.sellingPoint}
+                  styleNote={product.styleNote}
+                  trending={product.trending}
+                  featured={product.featured}
                 />
-
-                {product.sellingPoint && (
-                  <div className="mt-4 border-l border-black/15 pl-3">
-                    <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-neutral-500">
-                      Why it's here
-                    </p>
-
-                    <p className="mt-1 text-[11px] leading-5 text-neutral-500">
-                      {product.sellingPoint}
-                    </p>
-                  </div>
-                )}
               </div>
             ))}
           </div>
@@ -94,11 +86,11 @@ export default async function TrendingProducts() {
           <div className="flex min-h-[250px] items-center justify-center text-center">
             <div>
               <p className="text-lg font-medium text-black">
-                The edit is being refreshed.
+                No products found.
               </p>
 
               <p className="mt-2 text-sm text-neutral-500">
-                Check back soon for the next selection.
+                Add products to Supabase to see them here.
               </p>
             </div>
           </div>
