@@ -5,15 +5,14 @@ import ProductCard from "@/components/products/product-card";
 import { getProducts } from "@/lib/products";
 
 export default async function EditorsPicks() {
-  // Supabase is the single source of truth.
   const allProducts = await getProducts();
 
-  // Only products that actually exist in Supabase can appear here.
   const editorPicks = allProducts
     .filter((product) => product.featured)
     .slice(0, 3);
 
   const featuredPick = editorPicks[0];
+  const secondaryPicks = editorPicks.slice(1, 3);
 
   return (
     <section
@@ -22,16 +21,22 @@ export default async function EditorsPicks() {
     >
       <div className="mx-auto max-w-[1440px]">
         {/* Header */}
-        <div className="mb-10 flex flex-col justify-between gap-6 sm:mb-12 lg:flex-row lg:items-end">
+        <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
           <div>
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-400">
-              Curated by Fashion Edit
-            </p>
+            <div className="mb-5 flex items-center gap-3">
+              <span className="h-px w-8 bg-black" />
 
-            <h2 className="text-3xl font-medium tracking-[-0.04em] text-black sm:text-4xl lg:text-5xl">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-400">
+                Curated by Fashion Edit
+              </p>
+            </div>
+
+            <h2 className="text-4xl font-medium leading-[0.95] tracking-[-0.05em] text-black sm:text-5xl lg:text-6xl">
               Our current
               <br />
-              <span className="font-normal italic">favorites.</span>
+              <span className="font-normal italic text-neutral-400">
+                favorites.
+              </span>
             </h2>
           </div>
 
@@ -43,7 +48,7 @@ export default async function EditorsPicks() {
 
             <Link
               href="/search"
-              className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-600 transition hover:text-black"
+              className="mt-5 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-black transition-opacity hover:opacity-50"
             >
               See the full edit
               <ArrowUpRight size={14} strokeWidth={1.6} />
@@ -51,9 +56,9 @@ export default async function EditorsPicks() {
           </div>
         </div>
 
-        {/* Nothing curated yet */}
+        {/* Empty state */}
         {editorPicks.length === 0 ? (
-          <div className="border border-black/10 bg-white px-6 py-16 text-center">
+          <div className="border border-black/10 bg-white px-6 py-20 text-center">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-neutral-400">
               No editor picks yet
             </p>
@@ -64,55 +69,106 @@ export default async function EditorsPicks() {
           </div>
         ) : (
           <>
-            {/* Main Layout */}
-            <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-              {/* Editorial Feature */}
-              <div className="relative min-h-[560px] overflow-hidden bg-neutral-200 sm:min-h-[680px]">
-                <div className="absolute inset-0 bg-gradient-to-br from-stone-300 via-neutral-200 to-neutral-500" />
+            {/* Main editorial layout */}
+            <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+              {/* Featured Product */}
+              {featuredPick && (
+                <Link
+                  href={`/products/${featuredPick.id}`}
+                  className="group relative overflow-hidden bg-white"
+                >
+                  <div className="relative min-h-[560px] overflow-hidden sm:min-h-[680px]">
+                    {/* Product image */}
+                    <div className="absolute inset-0 bg-[#ece9e4]">
+                      {featuredPick.image ? (
+                        <img
+                          src={featuredPick.image}
+                          alt={featuredPick.name}
+                          className="h-full w-full object-contain p-8 transition duration-1000 ease-out group-hover:scale-[1.025] sm:p-12"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-neutral-400">
+                            Fashion Edit
+                          </span>
+                        </div>
+                      )}
+                    </div>
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+                    {/* Very subtle image overlay */}
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-                {/* Authority Badge */}
-                <div className="absolute left-6 top-6 inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 backdrop-blur-sm">
-                  <Check size={12} strokeWidth={2} />
+                    {/* Badge */}
+                    <div className="absolute left-5 top-5 sm:left-7 sm:top-7">
+                      <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-sm">
+                        <Check size={12} strokeWidth={2} />
 
-                  <span className="text-[9px] font-semibold uppercase tracking-[0.18em]">
-                    Editor approved
-                  </span>
-                </div>
+                        <span className="text-[8px] font-bold uppercase tracking-[0.18em] text-black">
+                          Editor approved
+                        </span>
+                      </div>
+                    </div>
 
-                {/* Feature Content */}
-                <div className="absolute bottom-7 left-7 right-7 text-white sm:bottom-10 sm:left-10 sm:right-10">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/65">
-                    {featuredPick?.category || "Featured piece"}
-                  </p>
+                    {/* Category */}
+                    <div className="absolute right-5 top-5 sm:right-7 sm:top-7">
+                      <span className="rounded-full bg-black/65 px-3 py-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-md">
+                        {featuredPick.category}
+                      </span>
+                    </div>
 
-                  <h3 className="mt-3 max-w-xl text-4xl font-medium tracking-[-0.05em] sm:text-5xl">
-                    A piece worth
-                    <br />
-                    making room for.
-                  </h3>
+                    {/* Content */}
+                    <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-9 lg:p-10">
+                      <p className="text-[9px] font-semibold uppercase tracking-[0.28em] text-white/60">
+                        Featured piece
+                      </p>
 
-                  <p className="mt-4 max-w-md text-sm leading-6 text-white/75">
-                    {featuredPick?.description}
-                  </p>
+                      <h3 className="mt-3 max-w-2xl text-4xl font-medium leading-[0.98] tracking-[-0.05em] sm:text-5xl lg:text-6xl">
+                        A piece worth
+                        <br />
+                        making room for.
+                      </h3>
 
-                  {featuredPick && (
-                    <Link
-                      href={`/products/${featuredPick.id}`}
-                      className="mt-7 inline-flex items-center gap-3 border-b border-white/60 pb-1 text-[10px] font-semibold uppercase tracking-[0.2em]"
-                    >
-                      Discover the pick
-                      <ArrowUpRight size={14} strokeWidth={1.6} />
-                    </Link>
-                  )}
-                </div>
-              </div>
+                      <p className="mt-4 max-w-xl text-sm leading-6 text-white/75">
+                        {featuredPick.description}
+                      </p>
 
-              {/* Product Picks */}
-              <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6">
-                {editorPicks.map((product) => (
-                  <div key={product.id}>
+                      <div className="mt-5 flex items-center gap-4">
+                        <span className="text-[9px] font-bold uppercase tracking-[0.18em]">
+                          {featuredPick.brand}
+                        </span>
+
+                        <span className="h-1 w-1 rounded-full bg-white/40" />
+
+                        <span className="text-[9px] font-medium uppercase tracking-[0.16em] text-white/65">
+                          ₹
+                          {featuredPick.price.toLocaleString("en-IN")}
+                        </span>
+                      </div>
+
+                      {/* CTA */}
+                      <div className="mt-7">
+                        <span className="inline-flex items-center gap-3 rounded-full bg-white px-5 py-3 text-[9px] font-bold uppercase tracking-[0.2em] text-black transition duration-300 group-hover:bg-neutral-100">
+                          Discover the pick
+
+                          <ArrowUpRight
+                            size={14}
+                            strokeWidth={1.7}
+                            className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {/* Two secondary products */}
+              <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                {secondaryPicks.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex flex-col bg-white"
+                  >
                     <ProductCard
                       id={product.id}
                       name={product.name}
@@ -120,41 +176,54 @@ export default async function EditorsPicks() {
                       price={`₹${product.price.toLocaleString("en-IN")}`}
                       category={product.category}
                       image={product.image}
+                      sellingPoint={product.sellingPoint}
+                      styleNote={product.styleNote}
+                      trending={product.trending}
+                      featured={product.featured}
                     />
 
-                    {/* Why We Picked It */}
-                    <div className="mt-4 border-l border-black/15 pl-3">
-                      <p className="text-[8px] font-semibold uppercase tracking-[0.16em] text-neutral-400">
+                    <div className="border-t border-black/10 px-4 pb-5 pt-4 sm:px-5">
+                      <p className="text-[8px] font-bold uppercase tracking-[0.16em] text-neutral-400">
                         Why we picked it
                       </p>
 
-                      <p className="mt-1 text-[11px] leading-5 text-neutral-500">
+                      <p className="mt-2 text-[11px] leading-5 text-neutral-500">
                         {product.sellingPoint ||
-                          "A thoughtfully selected piece from the current Fashion Edit."}
+                          "A considered piece selected for the current Fashion Edit."}
                       </p>
+
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="mt-4 inline-flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.18em] text-black transition-opacity hover:opacity-50"
+                      >
+                        View piece
+                        <ArrowUpRight size={12} strokeWidth={1.6} />
+                      </Link>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Curator Principle */}
-            <div className="mt-10 border-t border-black/10 pt-7">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            {/* Curator principle */}
+            <div className="mt-10 flex flex-col justify-between gap-5 border-t border-black/10 pt-7 sm:flex-row sm:items-center">
+              <div className="flex items-start gap-4">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black" />
+
                 <p className="max-w-xl text-xs leading-6 text-neutral-400">
                   Fashion Edit is designed to reduce choice overload. Fewer,
                   better-curated options can make finding the right piece
                   easier.
                 </p>
-
-                <Link
-                  href="/collections"
-                  className="inline-flex shrink-0 items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-600 transition hover:text-black"
-                >
-                  Explore collections
-                  <ArrowUpRight size={14} strokeWidth={1.6} />
-                </Link>
               </div>
+
+              <Link
+                href="/collections"
+                className="inline-flex shrink-0 items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-black transition-opacity hover:opacity-50"
+              >
+                Explore collections
+                <ArrowUpRight size={14} strokeWidth={1.6} />
+              </Link>
             </div>
           </>
         )}
