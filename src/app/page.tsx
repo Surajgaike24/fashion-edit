@@ -9,14 +9,26 @@ import Footer from "@/components/layout/footer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="min-h-screen overflow-x-hidden bg-white text-black">
+      {/* Navigation */}
       <Navbar />
-      <Hero />
-      <FeaturedCategories />
-      <TrendingProducts />
-      <ShopTheLook />
-      <EditorsPicks />
-      <FashionInspiration />
+
+      {/* Main Experience */}
+      <div>
+        <Hero />
+
+        <FeaturedCategories />
+
+        <TrendingProducts />
+
+        <ShopTheLook />
+
+        <EditorsPicks />
+
+        <FashionInspiration />
+      </div>
+
+      {/* Footer */}
       <Footer />
     </main>
   );
