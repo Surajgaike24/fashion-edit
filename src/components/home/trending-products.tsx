@@ -14,59 +14,62 @@ export default async function TrendingProducts() {
   return (
     <section
       id="trending"
-      className="bg-[#f7f6f3] px-5 py-20 sm:px-8 lg:px-12 lg:py-28"
+      className="bg-[#f7f6f3] px-5 py-14 sm:px-8 sm:py-20 lg:px-12 lg:py-24"
     >
       <div className="mx-auto max-w-[1440px]">
-        {/* Header */}
-        <div className="mb-10 flex flex-col justify-between gap-6 sm:mb-12 md:flex-row md:items-end">
-          <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-2">
-              <Sparkles size={12} strokeWidth={1.5} />
 
-              <span className="text-[9px] font-semibold uppercase tracking-[0.2em] text-neutral-600">
-                Curated for you
-              </span>
+        {/* Header */}
+        <div className="mb-7 sm:mb-10">
+          <div className="flex items-end justify-between gap-5">
+            <div>
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-2">
+                <Sparkles size={11} strokeWidth={1.5} />
+
+                <span className="text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-600">
+                  Fashion Edit
+                </span>
+              </div>
+
+              <p className="mb-2 text-[9px] font-semibold uppercase tracking-[0.28em] text-neutral-400">
+                Trending now
+              </p>
+
+              <h2 className="text-3xl font-medium leading-none tracking-[-0.05em] text-black sm:text-4xl lg:text-5xl">
+                Pieces worth
+                <br className="sm:hidden" /> noticing.
+              </h2>
             </div>
 
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-400">
-              Trending now
-            </p>
-
-            <h2 className="text-3xl font-medium tracking-[-0.04em] text-black sm:text-4xl lg:text-5xl">
-              Pieces worth noticing.
-            </h2>
-
-            <p className="mt-4 max-w-xl text-sm leading-6 text-neutral-500">
-              Not everything deserves your attention. We highlight pieces
-              that fit the edit and are worth a closer look.
-            </p>
+            <Link
+              href="/search"
+              className="hidden items-center gap-2 text-[9px] font-semibold uppercase tracking-[0.16em] text-neutral-500 transition hover:text-black sm:inline-flex"
+            >
+              View all
+              <ArrowUpRight size={13} strokeWidth={1.6} />
+            </Link>
           </div>
 
-          <Link
-            href="/search"
-            className="hidden items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 transition hover:text-black sm:inline-flex"
-          >
-            Explore the edit
-            <ArrowUpRight size={14} strokeWidth={1.6} />
-          </Link>
+          <p className="mt-4 max-w-xl text-xs leading-5 text-neutral-500 sm:text-sm sm:leading-6">
+            A curated selection of fashion pieces from our latest edit.
+          </p>
         </div>
 
         {/* Product Count */}
-        <div className="mb-8 flex items-center justify-between border-y border-black/10 py-4">
-          <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-neutral-400">
-            Selected pieces
+        <div className="mb-6 flex items-center justify-between border-y border-black/10 py-3.5">
+          <p className="text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            Latest selection
           </p>
 
-          <p className="text-[9px] font-medium uppercase tracking-[0.2em] text-neutral-500">
-            {homeProducts.length} products
+          <p className="text-[8px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+            {homeProducts.length} pieces
           </p>
         </div>
 
         {/* Products */}
         {homeProducts.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-12 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-9 sm:gap-x-5 sm:gap-y-12 lg:grid-cols-4 lg:gap-x-6 lg:gap-y-14">
             {homeProducts.map((product) => (
-              <div key={product.id} className="group">
+              <div key={product.id}>
                 <ProductCard
                   id={product.id}
                   name={product.name}
@@ -83,13 +86,13 @@ export default async function TrendingProducts() {
             ))}
           </div>
         ) : (
-          <div className="flex min-h-[250px] items-center justify-center text-center">
+          <div className="flex min-h-[220px] items-center justify-center text-center">
             <div>
-              <p className="text-lg font-medium text-black">
+              <p className="text-base font-medium text-black">
                 No products found.
               </p>
 
-              <p className="mt-2 text-sm text-neutral-500">
+              <p className="mt-2 text-xs text-neutral-500">
                 Add products to Supabase to see them here.
               </p>
             </div>
@@ -97,23 +100,36 @@ export default async function TrendingProducts() {
         )}
 
         {/* Bottom CTA */}
-        <div className="mt-14 flex flex-col items-start justify-between gap-5 border-t border-black/10 pt-8 sm:flex-row sm:items-center">
-          <div>
-            <p className="text-sm font-medium text-black">
-              Still deciding?
-            </p>
+        <div className="mt-10 border-t border-black/10 pt-6 sm:mt-14 sm:pt-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-sm font-medium text-black">
+                Looking for something specific?
+              </p>
 
-            <p className="mt-1 text-xs text-neutral-400">
-              Explore the full edit and find something that feels right.
-            </p>
+              <p className="mt-1 text-xs text-neutral-400">
+                Search the complete Fashion Edit.
+              </p>
+            </div>
+
+            <Link
+              href="/search"
+              className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-black px-6 py-3.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-neutral-800 sm:w-auto"
+            >
+              Explore all pieces
+              <ArrowUpRight size={14} strokeWidth={1.6} />
+            </Link>
           </div>
+        </div>
 
+        {/* Mobile View All */}
+        <div className="mt-6 flex justify-center sm:hidden">
           <Link
             href="/search"
-            className="inline-flex items-center gap-3 rounded-full bg-black px-6 py-3.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-neutral-800"
+            className="inline-flex items-center gap-2 border-b border-black pb-1 text-[9px] font-semibold uppercase tracking-[0.16em] text-black"
           >
-            Explore all pieces
-            <ArrowUpRight size={14} strokeWidth={1.6} />
+            View all fashion
+            <ArrowUpRight size={13} strokeWidth={1.6} />
           </Link>
         </div>
       </div>
