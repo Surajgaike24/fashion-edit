@@ -73,91 +73,129 @@ export default function ProductCard({
     );
   };
 
+  const badge = featured
+    ? "Editor's Pick"
+    : trending
+      ? "Trending"
+      : null;
+
   return (
-    <article className="group relative">
-      {/* Product Image */}
-      <Link href={href} className="block">
-        <div className="relative aspect-[4/5] overflow-hidden bg-neutral-100">
-          {image ? (
-            <img
-              src={image}
-              alt={name}
-              className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-300">
-              <span className="text-[9px] font-semibold uppercase tracking-[0.25em] text-neutral-400">
-                Fashion Edit
-              </span>
-            </div>
-          )}
+    <article className="group min-w-0">
+      {/* Product Visual */}
+      <div className="relative">
+        <Link
+          href={href}
+          aria-label={`View ${name}`}
+          className="block"
+        >
+          <div className="relative aspect-[4/5] overflow-hidden bg-[#f2f1ee]">
 
-          {/* Category */}
-          <span className="absolute left-3 top-3 bg-white/95 px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.15em] backdrop-blur-sm">
-            {category}
-          </span>
+            {image ? (
+              <img
+                src={image}
+                alt={name}
+                loading="lazy"
+                className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-[1.035]"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-[#eeece8]">
+                <span className="text-[8px] font-semibold uppercase tracking-[0.25em] text-neutral-400">
+                  Fashion Edit
+                </span>
+              </div>
+            )}
 
-          {/* Product Signal */}
-          {(trending || featured) && (
-            <span className="absolute bottom-3 left-3 bg-black px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.15em] text-white">
-              {trending ? "Trending" : "Editor's Pick"}
+            {/* Soft image overlay */}
+            <div className="pointer-events-none absolute inset-0 bg-black/[0.02] transition duration-500 group-hover:bg-black/0" />
+
+            {/* Category */}
+            <span className="absolute left-3 top-3 max-w-[calc(100%-4.5rem)] truncate rounded-full bg-white/95 px-3 py-1.5 text-[7px] font-semibold uppercase tracking-[0.15em] text-black shadow-sm backdrop-blur-sm">
+              {category}
             </span>
-          )}
 
-          {/* Desktop Hover CTA */}
-          <div className="pointer-events-none absolute inset-x-3 bottom-3 hidden translate-y-2 opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 sm:block">
-            <div className="flex items-center justify-between bg-white/95 px-4 py-3 backdrop-blur-sm">
-              <span className="text-[9px] font-semibold uppercase tracking-[0.16em]">
-                View piece
+            {/* Product Signal */}
+            {badge && (
+              <span className="absolute bottom-3 left-3 rounded-full bg-black px-3 py-1.5 text-[7px] font-semibold uppercase tracking-[0.16em] text-white">
+                {badge}
               </span>
+            )}
 
-              <ArrowUpRight size={14} strokeWidth={1.6} />
+            {/* Desktop View CTA */}
+            <div className="pointer-events-none absolute inset-x-3 bottom-3 hidden translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 sm:block">
+              <div className="flex items-center justify-between bg-white/95 px-4 py-3 backdrop-blur-md">
+                <span className="text-[8px] font-bold uppercase tracking-[0.18em] text-black">
+                  View piece
+                </span>
+
+                <ArrowUpRight
+                  size={14}
+                  strokeWidth={1.6}
+                  className="text-black"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </Link>
+        </Link>
 
-      {/* Wishlist */}
-      <button
-        type="button"
-        onClick={toggleWishlist}
-        aria-label={saved ? "Remove from saved items" : "Save item"}
-        className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 backdrop-blur-sm transition hover:scale-105 hover:bg-white"
-      >
-        <Heart
-          size={16}
-          strokeWidth={1.7}
-          className={saved ? "fill-black text-black" : "text-black"}
-        />
-      </button>
+        {/* Wishlist */}
+        <button
+          type="button"
+          onClick={toggleWishlist}
+          aria-label={saved ? "Remove from saved items" : "Save item"}
+          aria-pressed={saved}
+          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 text-black shadow-sm backdrop-blur-sm transition duration-200 hover:scale-105 hover:bg-white active:scale-95"
+        >
+          <Heart
+            size={16}
+            strokeWidth={1.7}
+            className={
+              saved
+                ? "fill-black text-black"
+                : "text-black transition-colors"
+            }
+          />
+        </button>
+      </div>
 
       {/* Product Information */}
-      <Link href={href} className="block pt-4">
-        <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-neutral-400">
+      <Link
+        href={href}
+        className="block pt-4"
+      >
+        {/* Brand */}
+        <p className="text-[8px] font-semibold uppercase tracking-[0.22em] text-neutral-400">
           {brand}
         </p>
 
-        <h3 className="mt-1 text-sm font-medium tracking-[-0.01em] text-black">
+        {/* Product Name */}
+        <h3 className="mt-1.5 line-clamp-2 text-[13px] font-medium leading-5 tracking-[-0.015em] text-black sm:text-sm">
           {name}
         </h3>
 
         {/* Selling Point */}
         {sellingPoint && (
-          <p className="mt-2 text-[11px] leading-5 text-neutral-500">
+          <p className="mt-2 line-clamp-2 text-[10px] leading-[1.55] text-neutral-500 sm:text-[11px]">
             {sellingPoint}
           </p>
         )}
 
-        <div className="mt-2 flex items-center justify-between gap-3">
-          <p className="text-sm font-medium text-neutral-800">
+        {/* Price + Style */}
+        <div className="mt-3 flex items-end justify-between gap-3">
+          <p className="text-[13px] font-semibold tracking-[-0.01em] text-black sm:text-sm">
             {price}
           </p>
 
           {styleNote && (
-            <span className="hidden text-right text-[8px] font-medium uppercase tracking-[0.1em] text-neutral-400 sm:block">
+            <span className="hidden max-w-[110px] truncate text-right text-[7px] font-semibold uppercase tracking-[0.12em] text-neutral-400 sm:block">
               {styleNote.split("•")[0].trim()}
             </span>
           )}
+        </div>
+
+        {/* Mobile Discover */}
+        <div className="mt-3 flex items-center gap-1.5 text-[8px] font-bold uppercase tracking-[0.16em] text-neutral-500 sm:hidden">
+          View piece
+          <ArrowUpRight size={11} strokeWidth={1.6} />
         </div>
       </Link>
     </article>
